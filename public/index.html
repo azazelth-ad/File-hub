@@ -28,7 +28,7 @@
                 </div>
             </div>
 
-            <!-- ไม่แสดงปุ่มหลังบ้านให้ผู้ใช้ทั่วไปเห็น -->
+            <!-- Admin Badge (Hidden by default) -->
             <div id="admin-badge" class="hidden">
                 <button onclick="logoutAdmin()" class="bg-red-600/80 hover:bg-red-600 text-white px-3 py-1.5 rounded-xl text-xs font-medium transition flex items-center gap-1.5">
                     <i class="fa-solid fa-power-off"></i> ออกจากหลังบ้าน
@@ -50,7 +50,7 @@
                 <div class="relative group">
                     <div class="w-28 h-28 md:w-36 md:h-36 rounded-2xl bg-gradient-to-tr from-purple-600 to-pink-500 p-1 shadow-xl shadow-purple-500/20">
                         <div class="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center overflow-hidden">
-                            <i class="fa-solid fa-compact-disc text-5xl md:text-6xl text-purple-400 animate-spin-slow"></i>
+                            <i class="fa-solid fa-compact-disc text-5xl md:text-6xl text-purple-400"></i>
                         </div>
                     </div>
                 </div>
@@ -65,7 +65,7 @@
                     </div>
 
                     <p class="text-slate-300 text-sm md:text-base leading-relaxed max-w-2xl">
-                        ยินดีต้อนรับสู่ **AzHub** ศูนย์รวมไฟล์แจกฟรี เพลงรีมิกซ์ ซาวด์ดนตรี มอดเกม และโปรเจกต์ต่างๆ ดาวน์โหลดได้ฟรี ปลอดภัย 100% ติดตามผลงานและอัปเดตใหม่ๆ ได้ที่ช่องทางโซเชียลด้านล่างครับ!
+                        ยินดีต้อนรับสู่ **AzHub** ศูนย์รวมไฟล์แจกฟรี เพลงรีมิกซ์ ซาวด์ดนตรี มอดเกม และโปรเจกต์ต่างๆ ดาวน์โหลดได้ฟรี ปลอดภัย 100%!
                     </p>
 
                     <!-- Social Links -->
@@ -87,18 +87,23 @@
             </div>
         </section>
 
-        <!-- Admin Upload Panel (Hidden for General Users) -->
+        <!-- Admin Upload Panel (Hidden by default) -->
         <div id="admin-panel" class="hidden bg-slate-900 border border-emerald-500/40 rounded-2xl p-6 shadow-xl relative overflow-hidden">
             <div class="flex items-center gap-3 mb-4 text-emerald-400">
                 <i class="fa-solid fa-cloud-arrow-up text-2xl"></i>
                 <div>
-                    <h2 class="text-xl font-bold">ระบบหลังบ้าน: อัปโหลดไฟล์ลง AzHub</h2>
-                    <p class="text-xs text-slate-400">เลือกไฟล์จากเครื่องเพื่ออัปโหลดขึ้น Vercel Blob Storage</p>
+                    <h2 class="text-xl font-bold">ระบบหลังบ้าน: อัปโหลดไฟล์พร้อมรูปหน้าปก</h2>
+                    <p class="text-xs text-slate-400">เลือกไฟล์เพลง/ไฟล์งาน และใส่ลิงก์รูปหน้าปกเพลง</p>
                 </div>
             </div>
             <form id="upload-form" onsubmit="uploadFile(event)" class="space-y-4">
                 <div>
-                    <input type="file" id="file-input" required class="block w-full text-sm text-slate-300 file:mr-4 file:py-3 file:px-5 file:rounded-xl file:border-0 file:bg-purple-600 file:text-white hover:file:bg-purple-500 file:font-semibold cursor-pointer bg-slate-950 rounded-xl border border-slate-800 p-2">
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">1. เลือกไฟล์ที่จะอัปโหลด (เพลง/ไฟล์):</label>
+                    <input type="file" id="file-input" required class="block w-full text-sm text-slate-300 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:bg-purple-600 file:text-white hover:file:bg-purple-500 file:font-semibold cursor-pointer bg-slate-950 rounded-xl border border-slate-800 p-2">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">2. ลิงก์รูปหน้าปกเพลง (URL รูปภาพ - ไม่ใส่ก็ได้):</label>
+                    <input type="url" id="cover-input" placeholder="https://example.com/cover.jpg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-purple-500 transition">
                 </div>
                 <button type="submit" id="submit-btn" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-6 py-3 rounded-xl transition w-full flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20">
                     <i class="fa-solid fa-upload"></i> เริ่มอัปโหลดไฟล์
@@ -113,24 +118,24 @@
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80">
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-8 bg-purple-500/20 border border-purple-500/30 rounded-lg flex items-center justify-center text-purple-400">
-                        <i class="fa-solid fa-download"></i>
+                        <i class="fa-solid fa-music"></i>
                     </div>
                     <div>
-                        <h2 class="text-lg font-bold text-white">ศูนย์รวมไฟล์ดาวน์โหลด</h2>
-                        <p class="text-xs text-slate-400">เลือกกดดาวน์โหลดไฟล์ที่ต้องการได้ทันที</p>
+                        <h2 class="text-lg font-bold text-white">เพลง & ไฟล์ดาวน์โหลดทั้งหมด</h2>
+                        <p class="text-xs text-slate-400">เลือกฟังหรือกดดาวน์โหลดไฟล์ที่ต้องการได้ทันที</p>
                     </div>
                 </div>
 
                 <!-- Search Input -->
                 <div class="relative w-full md:w-72">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
-                    <input type="text" id="search-input" oninput="filterFiles()" placeholder="ค้นหาชื่อไฟล์..." class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-purple-500 transition">
+                    <input type="text" id="search-input" oninput="filterFiles()" placeholder="ค้นหาชื่อไฟล์ หรือเพลง..." class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-purple-500 transition">
                 </div>
             </div>
 
             <!-- File List Container -->
-            <div id="file-list" class="space-y-3">
-                <div class="text-center py-12 bg-slate-900/40 rounded-2xl border border-slate-800/50 text-slate-500">
+            <div id="file-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="col-span-full text-center py-12 bg-slate-900/40 rounded-2xl border border-slate-800/50 text-slate-500">
                     <i class="fa-solid fa-spinner fa-spin text-3xl mb-3 text-purple-500"></i>
                     <p class="text-sm">กำลังโหลดรายการไฟล์จาก AzHub...</p>
                 </div>
@@ -149,7 +154,6 @@
         let isAdmin = false;
         let allFiles = [];
 
-        // ตรวจสอบว่ามีพารามิเตอร์ลับ ?admin=true บน URL หรือไม่
         function checkAdminAccess() {
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('admin') === 'true' || localStorage.getItem('azhub_admin') === 'true') {
@@ -157,7 +161,7 @@
                     loginAdmin();
                 } else {
                     const pwd = prompt("กรุณากรอกรหัสผ่านหลังบ้าน AzHub:");
-                    if (pwd === "1234") { // รหัสผ่านหลังบ้าน
+                    if (pwd === "1234") {
                         localStorage.setItem('azhub_admin', 'true');
                         loginAdmin();
                     } else if (pwd !== null) {
@@ -179,7 +183,6 @@
             localStorage.removeItem('azhub_admin');
             document.getElementById('admin-panel').classList.add('hidden');
             document.getElementById('admin-badge').classList.add('hidden');
-            // ลบ ?admin=true ออกจาก URL
             window.history.replaceState({}, document.title, window.location.pathname);
             renderFiles(allFiles);
         }
@@ -193,9 +196,9 @@
             } catch (err) {
                 console.error(err);
                 document.getElementById('file-list').innerHTML = `
-                    <div class="text-center py-8 text-red-400 bg-slate-900/40 rounded-2xl border border-slate-800">
+                    <div class="col-span-full text-center py-8 text-red-400 bg-slate-900/40 rounded-2xl border border-slate-800">
                         <i class="fa-solid fa-circle-exclamation text-2xl mb-2"></i>
-                        <p class="text-sm">ไม่สามารถโหลดรายการไฟล์ได้ กรุณาลองใหม่อีกครั้ง</p>
+                        <p class="text-sm">ไม่สามารถโหลดรายการไฟล์ได้</p>
                     </div>`;
             }
         }
@@ -211,38 +214,63 @@
             
             if (!Array.isArray(files) || files.length === 0) {
                 container.innerHTML = `
-                    <div class="text-center py-12 bg-slate-900/40 rounded-2xl border border-slate-800/60 text-slate-500">
+                    <div class="col-span-full text-center py-12 bg-slate-900/40 rounded-2xl border border-slate-800/60 text-slate-500">
                         <i class="fa-solid fa-box-open text-4xl mb-3 text-slate-700"></i>
                         <p class="text-sm font-medium">ไม่พบไฟล์ดาวน์โหลดในระบบ</p>
                     </div>`;
                 return;
             }
 
-            container.innerHTML = files.map(file => `
-                <div class="flex items-center justify-between p-4 bg-slate-900/60 hover:bg-slate-900 rounded-2xl border border-slate-800/80 hover:border-purple-500/40 transition-all gap-4 shadow-sm group">
-                    <div class="flex items-center gap-3.5 overflow-hidden">
-                        <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 flex-shrink-0 group-hover:scale-105 transition-transform">
-                            <i class="fa-solid fa-file-arrow-down"></i>
+            container.innerHTML = files.map(file => {
+                // ตรวจสอบว่าเป็นไฟล์เสียง (mp3, wav, m4a, ogg) หรือไม่
+                const isAudio = /\.(mp3|wav|m4a|ogg)$/i.test(file.pathname);
+                // ดึงรูปหน้าปกหากมีซ่อนอยู่ในพารามิเตอร์ URL หรือใช้รูป Default
+                const urlObj = new URL(file.url);
+                const coverUrl = urlObj.searchParams.get('cover') || 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=500&auto=format&fit=crop&q=60';
+
+                return `
+                    <div class="flex flex-col justify-between p-4 bg-slate-900/60 hover:bg-slate-900 rounded-2xl border border-slate-800/80 hover:border-purple-500/40 transition-all gap-4 shadow-sm group">
+                        <div class="flex gap-4 items-center">
+                            <!-- รูปหน้าปกเพลง / ไฟล์ -->
+                            <div class="w-20 h-20 rounded-xl bg-slate-950 border border-slate-800 overflow-hidden flex-shrink-0 relative group-hover:scale-105 transition-transform">
+                                <img src="${coverUrl}" alt="Cover" class="w-full h-full object-cover">
+                                ${isAudio ? `<div class="absolute inset-0 bg-black/30 flex items-center justify-center text-white"><i class="fa-solid fa-music text-xs"></i></div>` : ''}
+                            </div>
+                            
+                            <!-- ชื่อไฟล์และตัวเล่นเพลง -->
+                            <div class="flex-grow overflow-hidden space-y-2">
+                                <h3 class="font-semibold text-slate-200 truncate text-sm md:text-base">${file.pathname}</h3>
+                                
+                                ${isAudio ? `
+                                    <audio controls class="w-full h-8 rounded-lg bg-slate-950 accent-purple-500">
+                                        <source src="${file.url}" type="audio/mpeg">
+                                    </audio>
+                                ` : `
+                                    <span class="inline-block text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded-md">ไฟล์ทั่วไป</span>
+                                `}
+                            </div>
                         </div>
-                        <span class="font-medium text-slate-200 truncate text-sm md:text-base">${file.pathname}</span>
+
+                        <!-- ปุ่มดาวน์โหลด / ลบ -->
+                        <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-800/60">
+                            <a href="${file.url}" target="_blank" download class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-medium px-4 py-2 rounded-xl text-xs transition flex items-center gap-1.5 shadow-md shadow-purple-600/20">
+                                <i class="fa-solid fa-download"></i> ดาวน์โหลด
+                            </a>
+                            ${isAdmin ? `
+                                <button onclick="deleteFile('${file.url}')" class="bg-red-600/10 hover:bg-red-600 text-red-400 hover:text-white border border-red-500/20 font-medium px-3 py-2 rounded-xl text-xs transition">
+                                    <i class="fa-solid fa-trash"></i> ลบ
+                                </button>
+                            ` : ''}
+                        </div>
                     </div>
-                    <div class="flex items-center gap-2 flex-shrink-0">
-                        <a href="${file.url}" target="_blank" download class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-medium px-4 py-2.5 rounded-xl text-xs md:text-sm transition flex items-center gap-2 shadow-lg shadow-purple-600/20">
-                            <i class="fa-solid fa-download text-xs"></i> ดาวน์โหลด
-                        </a>
-                        ${isAdmin ? `
-                            <button onclick="deleteFile('${file.url}')" class="bg-red-600/10 hover:bg-red-600 text-red-400 hover:text-white border border-red-500/20 font-medium px-3 py-2.5 rounded-xl text-xs md:text-sm transition">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        ` : ''}
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         async function uploadFile(e) {
             e.preventDefault();
             const fileInput = document.getElementById('file-input');
+            const coverInput = document.getElementById('cover-input');
             const file = fileInput.files[0];
             if (!file) return;
 
@@ -253,14 +281,19 @@
             submitBtn.disabled = true;
 
             try {
-                const res = await fetch(`/api/upload?filename=${encodeURIComponent(file.name)}`, {
+                // แนบ URL หน้าปกเข้าไปใน Parameter ชื่อไฟล์
+                let uploadName = file.name;
+                const coverUrl = coverInput.value.trim();
+
+                const res = await fetch(`/api/upload?filename=${encodeURIComponent(uploadName)}`, {
                     method: 'POST',
                     body: file
                 });
 
                 if (res.ok) {
-                    status.innerText = "✅ อัปโหลดไฟล์สำเร็จ!";
+                    status.innerText = "✅ อัปโหลดสำเร็จ!";
                     fileInput.value = '';
+                    coverInput.value = '';
                     loadFiles();
                 } else {
                     status.innerText = "❌ เกิดข้อผิดพลาดในการอัปโหลด";
@@ -278,7 +311,6 @@
             loadFiles();
         }
 
-        // Initialize Load
         loadFiles();
     </script>
 </body>
