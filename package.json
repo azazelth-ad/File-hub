@@ -1,0 +1,10 @@
+{
+  "name": "vercel-file-hub",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "dependencies": {
+    "@vercel/blob": "^0.22.1"
+  }
+}
