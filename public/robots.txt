@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://wskonersc.info/sitemap.xml
