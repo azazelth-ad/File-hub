@@ -222,22 +222,18 @@
             }
 
             container.innerHTML = files.map(file => {
-                // ตรวจสอบว่าเป็นไฟล์เสียง (mp3, wav, m4a, ogg) หรือไม่
                 const isAudio = /\.(mp3|wav|m4a|ogg)$/i.test(file.pathname);
-                // ดึงรูปหน้าปกหากมีซ่อนอยู่ในพารามิเตอร์ URL หรือใช้รูป Default
                 const urlObj = new URL(file.url);
                 const coverUrl = urlObj.searchParams.get('cover') || 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=500&auto=format&fit=crop&q=60';
 
                 return `
                     <div class="flex flex-col justify-between p-4 bg-slate-900/60 hover:bg-slate-900 rounded-2xl border border-slate-800/80 hover:border-purple-500/40 transition-all gap-4 shadow-sm group">
                         <div class="flex gap-4 items-center">
-                            <!-- รูปหน้าปกเพลง / ไฟล์ -->
                             <div class="w-20 h-20 rounded-xl bg-slate-950 border border-slate-800 overflow-hidden flex-shrink-0 relative group-hover:scale-105 transition-transform">
                                 <img src="${coverUrl}" alt="Cover" class="w-full h-full object-cover">
                                 ${isAudio ? `<div class="absolute inset-0 bg-black/30 flex items-center justify-center text-white"><i class="fa-solid fa-music text-xs"></i></div>` : ''}
                             </div>
                             
-                            <!-- ชื่อไฟล์และตัวเล่นเพลง -->
                             <div class="flex-grow overflow-hidden space-y-2">
                                 <h3 class="font-semibold text-slate-200 truncate text-sm md:text-base">${file.pathname}</h3>
                                 
@@ -251,7 +247,6 @@
                             </div>
                         </div>
 
-                        <!-- ปุ่มดาวน์โหลด / ลบ -->
                         <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-800/60">
                             <a href="${file.url}" target="_blank" download class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-medium px-4 py-2 rounded-xl text-xs transition flex items-center gap-1.5 shadow-md shadow-purple-600/20">
                                 <i class="fa-solid fa-download"></i> ดาวน์โหลด
@@ -281,11 +276,10 @@
             submitBtn.disabled = true;
 
             try {
-                // แนบ URL หน้าปกเข้าไปใน Parameter ชื่อไฟล์
-                let uploadName = file.name;
-                const coverUrl = coverInput.value.trim();
+                // ล้างสัญลักษณ์พิเศษออกจากชื่อไฟล์ ป้องกันข้อผิดพลาด
+                let cleanFileName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, '_');
 
-                const res = await fetch(`/api/upload?filename=${encodeURIComponent(uploadName)}`, {
+                const res = await fetch(`/api/upload?filename=${encodeURIComponent(cleanFileName)}`, {
                     method: 'POST',
                     body: file
                 });
