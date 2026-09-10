@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบลงไฟล์ & แจกไฟล์ (Vercel Blob)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-white min-h-screen p-6">
+    <div class="max-w-4xl mx-auto">
+        <header class="flex justify-between items-center mb-8 border-b border-slate-700 pb-4">
+            <h1 class="text-2xl font-bold text-blue-400">📦 ระบบแจกไฟล์ออนไลน์</h1>
+            <button id="auth-btn" onclick="toggleAdmin()" class="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded-lg text-sm">
+                เข้าสู่ระบบหลังบ้าน
+            </button>
+        </header>
+
+        <div id="admin-panel" class="hidden mb-8 p-6 bg-slate-800 rounded-xl border border-slate-700">
+            <h2 class="text-xl font-bold mb-4 text-emerald-400">📤 อัปโหลดไฟล์ใหม่ (หลังบ้าน)</h2>
+            <form id="upload-form" onsubmit="uploadFile(event)" class="space-y-4">
+                <input type="file" id="file-input" required class="block w-full text-sm text-slate-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-600 file:text-white hover:file:bg-blue-500">
+                <button type="submit" id="submit-btn" class="bg-emerald-600 hover:bg-emerald-500 px-6 py-2 rounded-lg font-medium w-full">
+                    เริ่มอัปโหลดไฟล์
+                </button>
+            </form>
+            <p id="status-msg" class="mt-2 text-sm text-yellow-400"></p>
+        </div>
+
+        <h2 class="text-xl font-bold mb-4">📥 ไฟล์ที่เปิดให้ดาวน์โหลด</h2>
+        <div id="file-list" class="space-y-3">
+            <p class="text-slate-400">กำลังโหลดรายการไฟล์...</p>
+        </div>
+    </div>
+
+    <script>
+        let isAdmin = false;
+
+        function toggleAdmin() {
+            if (!isAdmin) {
+                const pwd = prompt("กรุณาใส่รหัสผ่านหลังบ้าน:");
+                if (pwd === "1234") {
+                    isAdmin = true;
+                    document.getElementById('admin-panel').classList.remove('hidden');
+                    document.getElementById('auth-btn').innerText = "ออกจากระบบหลังบ้าน";
+                    loadFiles();
+                } else {
+                    alert("รหัสผ่านไม่ถูกต้อง");
+                }
+            } else {
+                isAdmin = false;
+                document.getElementById('admin-panel').classList.add('hidden');
+                document.getElementById('auth-btn').innerText = "เข้าสู่ระบบหลังบ้าน";
+                loadFiles();
+            }
+        }
+
+        async function loadFiles() {
+            try {
+                const res = await fetch('/api/files');
+                const files = await res.json();
+                const container = document.getElementById('file-list');
+
+                if (!Array.isArray(files) || files.length === 0) {
+                    container.innerHTML = '<p class="text-slate-500">ยังไม่มีไฟล์ในระบบ</p>';
+                    return;
+                }
+
+                container.innerHTML = files.map(file => `
+                    <div class="flex items-center justify-between p-4 bg-slate-800 rounded-lg border border-slate-700">
+                        <span class="font-medium truncate max-w-xs md:max-w-md">${file.pathname}</span>
+                        <div class="flex gap-2">
+                            <a href="${file.url}" target="_blank" download class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded text-sm">ดาวน์โหลด</a>
+                            ${isAdmin ? `<button onclick="deleteFile('${file.url}')" class="bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded text-sm">ลบ</button>` : ''}
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function uploadFile(e) {
+            e.preventDefault();
+            const fileInput = document.getElementById('file-input');
+            const file = fileInput.files[0];
+            if (!file) return;
+
+            const status = document.getElementById('status-msg');
+            status.innerText = "กำลังอัปโหลด...";
+
+            try {
+                const res = await fetch(`/api/upload?filename=${encodeURIComponent(file.name)}`, {
+                    method: 'POST',
+                    body: file
+                });
+
+                if (res.ok) {
+                    status.innerText = "อัปโหลดสำเร็จ!";
+                    fileInput.value = '';
+                    loadFiles();
+                } else {
+                    status.innerText = "เกิดข้อผิดพลาดในการอัปโหลด";
+                }
+            } catch (err) {
+                status.innerText = "เกิดข้อผิดพลาด";
+            }
+        }
+
+        async function deleteFile(url) {
+            if (!confirm("ยืนยันการลบไฟล์นี้?")) return;
+            await fetch(`/api/files?url=${encodeURIComponent(url)}`, { method: 'DELETE' });
+            loadFiles();
+        }
+
+        loadFiles();
+    </script>
+</body>
+</html>
