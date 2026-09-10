@@ -3,80 +3,226 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบลงไฟล์ & แจกไฟล์ (Vercel Blob)</title>
+    <title>AzHub - Portfolio & File Community</title>
+    <!-- Tailwind CSS & Font Awesome -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Kanit', sans-serif; }
+    </style>
 </head>
-<body class="bg-slate-900 text-white min-h-screen p-6">
-    <div class="max-w-4xl mx-auto">
-        <header class="flex justify-between items-center mb-8 border-b border-slate-700 pb-4">
-            <h1 class="text-2xl font-bold text-blue-400">📦 ระบบแจกไฟล์ออนไลน์</h1>
-            <button id="auth-btn" onclick="toggleAdmin()" class="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded-lg text-sm">
-                เข้าสู่ระบบหลังบ้าน
-            </button>
-        </header>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-purple-500 selection:text-white">
 
-        <div id="admin-panel" class="hidden mb-8 p-6 bg-slate-800 rounded-xl border border-slate-700">
-            <h2 class="text-xl font-bold mb-4 text-emerald-400">📤 อัปโหลดไฟล์ใหม่ (หลังบ้าน)</h2>
+    <!-- Navbar -->
+    <nav class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800/80 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <!-- Brand Logo -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-tr from-purple-600 via-indigo-600 to-blue-500 rounded-xl flex items-center justify-center font-black text-xl text-white shadow-lg shadow-purple-500/30">
+                    AZ
+                </div>
+                <div>
+                    <span class="font-extrabold text-xl tracking-wide bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">AzHub</span>
+                    <span class="text-[10px] bg-purple-500/20 text-purple-300 border border-purple-500/30 px-2 py-0.5 rounded-full ml-1 font-medium">OFFICIAL</span>
+                </div>
+            </div>
+
+            <!-- Admin Button -->
+            <button id="auth-btn" onclick="toggleAdmin()" class="bg-slate-800 hover:bg-slate-700 border border-slate-700/80 text-slate-300 hover:text-white px-4 py-2 rounded-xl text-sm font-medium transition flex items-center gap-2 shadow-sm">
+                <i class="fa-solid fa-user-shield text-purple-400"></i>
+                <span id="auth-btn-text">จัดการหลังบ้าน</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full space-y-8">
+
+        <!-- Hero / Channel Profile Section -->
+        <section class="relative bg-gradient-to-b from-slate-900 to-slate-900/60 border border-slate-800/80 rounded-3xl p-6 md:p-10 overflow-hidden shadow-2xl">
+            <!-- Glowing Background Blur Elements -->
+            <div class="absolute -top-10 -right-10 w-60 h-60 bg-purple-600/20 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-10 -left-10 w-60 h-60 bg-blue-600/20 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8 text-center md:text-left">
+                <!-- Avatar -->
+                <div class="relative group">
+                    <div class="w-28 h-28 md:w-36 md:h-36 rounded-2xl bg-gradient-to-tr from-purple-600 to-pink-500 p-1 shadow-xl shadow-purple-500/20">
+                        <div class="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center overflow-hidden">
+                            <i class="fa-solid fa-compact-disc text-5xl md:text-6xl text-purple-400 animate-spin-slow"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Info -->
+                <div class="flex-grow space-y-3">
+                    <div class="flex flex-col md:flex-row items-center md:items-start justify-between gap-3">
+                        <div>
+                            <h1 class="text-3xl md:text-4xl font-black text-white tracking-tight">AzHub Community</h1>
+                            <p class="text-purple-400 text-sm md:text-base font-medium mt-1">Digital Content Creator & DJ Remixer</p>
+                        </div>
+                    </div>
+
+                    <p class="text-slate-300 text-sm md:text-base leading-relaxed max-w-2xl">
+                        ยินดีต้อนรับสู่ **AzHub** ศูนย์รวมไฟล์แจกฟรี เพลงรีมิกซ์ ซาวด์ดนตรี มอดเกม และโปรเจกต์ต่างๆ ดาวน์โหลดได้ฟรี ปลอดภัย 100% ติดตามผลงานและอัปเดตใหม่ๆ ได้ที่ช่องทางโซเชียลด้านล่างครับ!
+                    </p>
+
+                    <!-- Social Links -->
+                    <div class="pt-2 flex flex-wrap justify-center md:justify-start gap-3">
+                        <a href="https://youtube.com" target="_blank" class="bg-red-600/15 hover:bg-red-600 text-red-400 hover:text-white border border-red-500/30 px-4 py-2 rounded-xl text-xs md:text-sm font-medium transition flex items-center gap-2">
+                            <i class="fa-brands fa-youtube text-base"></i> YouTube
+                        </a>
+                        <a href="https://facebook.com" target="_blank" class="bg-blue-600/15 hover:bg-blue-600 text-blue-400 hover:text-white border border-blue-500/30 px-4 py-2 rounded-xl text-xs md:text-sm font-medium transition flex items-center gap-2">
+                            <i class="fa-brands fa-facebook text-base"></i> Facebook
+                        </a>
+                        <a href="https://discord.com" target="_blank" class="bg-indigo-600/15 hover:bg-indigo-600 text-indigo-400 hover:text-white border border-indigo-500/30 px-4 py-2 rounded-xl text-xs md:text-sm font-medium transition flex items-center gap-2">
+                            <i class="fa-brands fa-discord text-base"></i> Discord
+                        </a>
+                        <a href="https://tiktok.com" target="_blank" class="bg-pink-600/15 hover:bg-pink-600 text-pink-400 hover:text-white border border-pink-500/30 px-4 py-2 rounded-xl text-xs md:text-sm font-medium transition flex items-center gap-2">
+                            <i class="fa-brands fa-tiktok text-base"></i> TikTok
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Upload Panel (Hidden by Default) -->
+        <div id="admin-panel" class="hidden bg-slate-900 border border-emerald-500/40 rounded-2xl p-6 shadow-xl relative overflow-hidden">
+            <div class="flex items-center gap-3 mb-4 text-emerald-400">
+                <i class="fa-solid fa-cloud-arrow-up text-2xl"></i>
+                <div>
+                    <h2 class="text-xl font-bold">ระบบหลังบ้าน: อัปโหลดไฟล์ลง AzHub</h2>
+                    <p class="text-xs text-slate-400">เลือกไฟล์จากเครื่องเพื่ออัปโหลดขึ้น Vercel Blob Storage</p>
+                </div>
+            </div>
             <form id="upload-form" onsubmit="uploadFile(event)" class="space-y-4">
-                <input type="file" id="file-input" required class="block w-full text-sm text-slate-300 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-600 file:text-white hover:file:bg-blue-500">
-                <button type="submit" id="submit-btn" class="bg-emerald-600 hover:bg-emerald-500 px-6 py-2 rounded-lg font-medium w-full">
-                    เริ่มอัปโหลดไฟล์
+                <div>
+                    <input type="file" id="file-input" required class="block w-full text-sm text-slate-300 file:mr-4 file:py-3 file:px-5 file:rounded-xl file:border-0 file:bg-purple-600 file:text-white hover:file:bg-purple-500 file:font-semibold cursor-pointer bg-slate-950 rounded-xl border border-slate-800 p-2">
+                </div>
+                <button type="submit" id="submit-btn" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-6 py-3 rounded-xl transition w-full flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20">
+                    <i class="fa-solid fa-upload"></i> เริ่มอัปโหลดไฟล์
                 </button>
             </form>
-            <p id="status-msg" class="mt-2 text-sm text-yellow-400"></p>
+            <p id="status-msg" class="mt-3 text-sm text-center font-medium text-yellow-400"></p>
         </div>
 
-        <h2 class="text-xl font-bold mb-4">📥 ไฟล์ที่เปิดให้ดาวน์โหลด</h2>
-        <div id="file-list" class="space-y-3">
-            <p class="text-slate-400">กำลังโหลดรายการไฟล์...</p>
-        </div>
-    </div>
+        <!-- File Distribution Section -->
+        <section class="space-y-4">
+            <!-- Section Header & Search Bar -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-purple-500/20 border border-purple-500/30 rounded-lg flex items-center justify-center text-purple-400">
+                        <i class="fa-solid fa-download"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-lg font-bold text-white">ศูนย์รวมไฟล์ดาวน์โหลด</h2>
+                        <p class="text-xs text-slate-400">เลือกกดดาวน์โหลดไฟล์ที่ต้องการได้ทันที</p>
+                    </div>
+                </div>
 
+                <!-- Search Input -->
+                <div class="relative w-full md:w-72">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+                    <input type="text" id="search-input" oninput="filterFiles()" placeholder="ค้นหาชื่อไฟล์..." class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-purple-500 transition">
+                </div>
+            </div>
+
+            <!-- File List Container -->
+            <div id="file-list" class="space-y-3">
+                <div class="text-center py-12 bg-slate-900/40 rounded-2xl border border-slate-800/50 text-slate-500">
+                    <i class="fa-solid fa-spinner fa-spin text-3xl mb-3 text-purple-500"></i>
+                    <p class="text-sm">กำลังโหลดรายการไฟล์จาก AzHub...</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-900 bg-slate-950 py-6 text-center text-xs text-slate-500">
+        <p>© 2026 AzHub. All Rights Reserved. Powered by Vercel.</p>
+    </footer>
+
+    <!-- JavaScript Logic -->
     <script>
         let isAdmin = false;
+        let allFiles = [];
 
         function toggleAdmin() {
             if (!isAdmin) {
-                const pwd = prompt("กรุณาใส่รหัสผ่านหลังบ้าน:");
-                if (pwd === "1234") {
+                const pwd = prompt("กรุณากรอกรหัสผ่านหลังบ้าน AzHub:");
+                if (pwd === "1234") { // รหัสผ่านหลังบ้าน
                     isAdmin = true;
                     document.getElementById('admin-panel').classList.remove('hidden');
-                    document.getElementById('auth-btn').innerText = "ออกจากระบบหลังบ้าน";
-                    loadFiles();
-                } else {
-                    alert("รหัสผ่านไม่ถูกต้อง");
+                    document.getElementById('auth-btn-text').innerText = "ออกจากระบบหลังบ้าน";
+                    document.getElementById('auth-btn').classList.replace('bg-slate-800', 'bg-red-600/80');
+                    renderFiles(allFiles);
+                } else if (pwd !== null) {
+                    alert("รหัสผ่านไม่ถูกต้อง!");
                 }
             } else {
                 isAdmin = false;
                 document.getElementById('admin-panel').classList.add('hidden');
-                document.getElementById('auth-btn').innerText = "เข้าสู่ระบบหลังบ้าน";
-                loadFiles();
+                document.getElementById('auth-btn-text').innerText = "จัดการหลังบ้าน";
+                document.getElementById('auth-btn').classList.replace('bg-red-600/80', 'bg-slate-800');
+                renderFiles(allFiles);
             }
         }
 
         async function loadFiles() {
             try {
                 const res = await fetch('/api/files');
-                const files = await res.json();
-                const container = document.getElementById('file-list');
-
-                if (!Array.isArray(files) || files.length === 0) {
-                    container.innerHTML = '<p class="text-slate-500">ยังไม่มีไฟล์ในระบบ</p>';
-                    return;
-                }
-
-                container.innerHTML = files.map(file => `
-                    <div class="flex items-center justify-between p-4 bg-slate-800 rounded-lg border border-slate-700">
-                        <span class="font-medium truncate max-w-xs md:max-w-md">${file.pathname}</span>
-                        <div class="flex gap-2">
-                            <a href="${file.url}" target="_blank" download class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded text-sm">ดาวน์โหลด</a>
-                            ${isAdmin ? `<button onclick="deleteFile('${file.url}')" class="bg-red-600 hover:bg-red-500 text-white px-3 py-1 rounded text-sm">ลบ</button>` : ''}
-                        </div>
-                    </div>
-                `).join('');
+                allFiles = await res.json();
+                renderFiles(allFiles);
             } catch (err) {
                 console.error(err);
+                document.getElementById('file-list').innerHTML = `
+                    <div class="text-center py-8 text-red-400 bg-slate-900/40 rounded-2xl border border-slate-800">
+                        <i class="fa-solid fa-circle-exclamation text-2xl mb-2"></i>
+                        <p class="text-sm">ไม่สามารถโหลดรายการไฟล์ได้ กรุณาลองใหม่อีกครั้ง</p>
+                    </div>`;
             }
+        }
+
+        function filterFiles() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const filtered = allFiles.filter(file => file.pathname.toLowerCase().includes(query));
+            renderFiles(filtered);
+        }
+
+        function renderFiles(files) {
+            const container = document.getElementById('file-list');
+            
+            if (!Array.isArray(files) || files.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 bg-slate-900/40 rounded-2xl border border-slate-800/60 text-slate-500">
+                        <i class="fa-solid fa-box-open text-4xl mb-3 text-slate-700"></i>
+                        <p class="text-sm font-medium">ไม่พบไฟล์ดาวน์โหลดในระบบ</p>
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = files.map(file => `
+                <div class="flex items-center justify-between p-4 bg-slate-900/60 hover:bg-slate-900 rounded-2xl border border-slate-800/80 hover:border-purple-500/40 transition-all gap-4 shadow-sm group">
+                    <div class="flex items-center gap-3.5 overflow-hidden">
+                        <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 flex-shrink-0 group-hover:scale-105 transition-transform">
+                            <i class="fa-solid fa-file-arrow-down"></i>
+                        </div>
+                        <span class="font-medium text-slate-200 truncate text-sm md:text-base">${file.pathname}</span>
+                    </div>
+                    <div class="flex items-center gap-2 flex-shrink-0">
+                        <a href="${file.url}" target="_blank" download class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-medium px-4 py-2.5 rounded-xl text-xs md:text-sm transition flex items-center gap-2 shadow-lg shadow-purple-600/20">
+                            <i class="fa-solid fa-download text-xs"></i> ดาวน์โหลด
+                        </a>
+                        ${isAdmin ? `
+                            <button onclick="deleteFile('${file.url}')" class="bg-red-600/10 hover:bg-red-600 text-red-400 hover:text-white border border-red-500/20 font-medium px-3 py-2.5 rounded-xl text-xs md:text-sm transition">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
         }
 
         async function uploadFile(e) {
@@ -86,7 +232,10 @@
             if (!file) return;
 
             const status = document.getElementById('status-msg');
-            status.innerText = "กำลังอัปโหลด...";
+            const submitBtn = document.getElementById('submit-btn');
+
+            status.innerText = "กำลังอัปโหลดไฟล์ไปที่ AzHub...";
+            submitBtn.disabled = true;
 
             try {
                 const res = await fetch(`/api/upload?filename=${encodeURIComponent(file.name)}`, {
@@ -95,23 +244,26 @@
                 });
 
                 if (res.ok) {
-                    status.innerText = "อัปโหลดสำเร็จ!";
+                    status.innerText = "✅ อัปโหลดไฟล์สำเร็จ!";
                     fileInput.value = '';
                     loadFiles();
                 } else {
-                    status.innerText = "เกิดข้อผิดพลาดในการอัปโหลด";
+                    status.innerText = "❌ เกิดข้อผิดพลาดในการอัปโหลด";
                 }
             } catch (err) {
-                status.innerText = "เกิดข้อผิดพลาด";
+                status.innerText = "❌ เกิดข้อผิดพลาด";
+            } finally {
+                submitBtn.disabled = false;
             }
         }
 
         async function deleteFile(url) {
-            if (!confirm("ยืนยันการลบไฟล์นี้?")) return;
+            if (!confirm("คุณแน่ใจหรือไม่ว่าต้องการลบไฟล์นี้ออกจาก AzHub?")) return;
             await fetch(`/api/files?url=${encodeURIComponent(url)}`, { method: 'DELETE' });
             loadFiles();
         }
 
+        // Initialize Load
         loadFiles();
     </script>
 </body>
