@@ -28,11 +28,12 @@
                 </div>
             </div>
 
-            <!-- Admin Button -->
-            <button id="auth-btn" onclick="toggleAdmin()" class="bg-slate-800 hover:bg-slate-700 border border-slate-700/80 text-slate-300 hover:text-white px-4 py-2 rounded-xl text-sm font-medium transition flex items-center gap-2 shadow-sm">
-                <i class="fa-solid fa-user-shield text-purple-400"></i>
-                <span id="auth-btn-text">จัดการหลังบ้าน</span>
-            </button>
+            <!-- ไม่แสดงปุ่มหลังบ้านให้ผู้ใช้ทั่วไปเห็น -->
+            <div id="admin-badge" class="hidden">
+                <button onclick="logoutAdmin()" class="bg-red-600/80 hover:bg-red-600 text-white px-3 py-1.5 rounded-xl text-xs font-medium transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-power-off"></i> ออกจากหลังบ้าน
+                </button>
+            </div>
         </div>
     </nav>
 
@@ -41,7 +42,6 @@
 
         <!-- Hero / Channel Profile Section -->
         <section class="relative bg-gradient-to-b from-slate-900 to-slate-900/60 border border-slate-800/80 rounded-3xl p-6 md:p-10 overflow-hidden shadow-2xl">
-            <!-- Glowing Background Blur Elements -->
             <div class="absolute -top-10 -right-10 w-60 h-60 bg-purple-600/20 rounded-full blur-3xl pointer-events-none"></div>
             <div class="absolute -bottom-10 -left-10 w-60 h-60 bg-blue-600/20 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -87,7 +87,7 @@
             </div>
         </section>
 
-        <!-- Admin Upload Panel (Hidden by Default) -->
+        <!-- Admin Upload Panel (Hidden for General Users) -->
         <div id="admin-panel" class="hidden bg-slate-900 border border-emerald-500/40 rounded-2xl p-6 shadow-xl relative overflow-hidden">
             <div class="flex items-center gap-3 mb-4 text-emerald-400">
                 <i class="fa-solid fa-cloud-arrow-up text-2xl"></i>
@@ -149,25 +149,39 @@
         let isAdmin = false;
         let allFiles = [];
 
-        function toggleAdmin() {
-            if (!isAdmin) {
-                const pwd = prompt("กรุณากรอกรหัสผ่านหลังบ้าน AzHub:");
-                if (pwd === "1234") { // รหัสผ่านหลังบ้าน
-                    isAdmin = true;
-                    document.getElementById('admin-panel').classList.remove('hidden');
-                    document.getElementById('auth-btn-text').innerText = "ออกจากระบบหลังบ้าน";
-                    document.getElementById('auth-btn').classList.replace('bg-slate-800', 'bg-red-600/80');
-                    renderFiles(allFiles);
-                } else if (pwd !== null) {
-                    alert("รหัสผ่านไม่ถูกต้อง!");
+        // ตรวจสอบว่ามีพารามิเตอร์ลับ ?admin=true บน URL หรือไม่
+        function checkAdminAccess() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('admin') === 'true' || localStorage.getItem('azhub_admin') === 'true') {
+                if (localStorage.getItem('azhub_admin') === 'true') {
+                    loginAdmin();
+                } else {
+                    const pwd = prompt("กรุณากรอกรหัสผ่านหลังบ้าน AzHub:");
+                    if (pwd === "1234") { // รหัสผ่านหลังบ้าน
+                        localStorage.setItem('azhub_admin', 'true');
+                        loginAdmin();
+                    } else if (pwd !== null) {
+                        alert("รหัสผ่านไม่ถูกต้อง!");
+                    }
                 }
-            } else {
-                isAdmin = false;
-                document.getElementById('admin-panel').classList.add('hidden');
-                document.getElementById('auth-btn-text').innerText = "จัดการหลังบ้าน";
-                document.getElementById('auth-btn').classList.replace('bg-red-600/80', 'bg-slate-800');
-                renderFiles(allFiles);
             }
+        }
+
+        function loginAdmin() {
+            isAdmin = true;
+            document.getElementById('admin-panel').classList.remove('hidden');
+            document.getElementById('admin-badge').classList.remove('hidden');
+            renderFiles(allFiles);
+        }
+
+        function logoutAdmin() {
+            isAdmin = false;
+            localStorage.removeItem('azhub_admin');
+            document.getElementById('admin-panel').classList.add('hidden');
+            document.getElementById('admin-badge').classList.add('hidden');
+            // ลบ ?admin=true ออกจาก URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+            renderFiles(allFiles);
         }
 
         async function loadFiles() {
@@ -175,6 +189,7 @@
                 const res = await fetch('/api/files');
                 allFiles = await res.json();
                 renderFiles(allFiles);
+                checkAdminAccess();
             } catch (err) {
                 console.error(err);
                 document.getElementById('file-list').innerHTML = `
