@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AzHub - Portfolio & File Community</title>
+    <title>AzHub - ศูนย์รวมไฟล์เพลงรีมิกซ์ ซาวด์ดนตรี มอดเกม ดาวน์โหลดฟรี</title>
+    <meta name="description" content="ศูนย์รวมไฟล์แจกฟรี เพลงรีมิกซ์ ซาวด์ดนตรี มอดเกม ดาวน์โหลดได้ฟรี ปลอดภัย 100% โดย AzHub">
+    
     <!-- Tailwind CSS & Font Awesome -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -17,7 +19,6 @@
     <!-- Navbar -->
     <nav class="bg-slate-900/80 backdrop-blur-md border-b border-slate-800/80 sticky top-0 z-50">
         <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
-            <!-- Brand Logo -->
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-gradient-to-tr from-purple-600 via-indigo-600 to-blue-500 rounded-xl flex items-center justify-center font-black text-xl text-white shadow-lg shadow-purple-500/30">
                     AZ
@@ -28,7 +29,6 @@
                 </div>
             </div>
 
-            <!-- Admin Badge (Hidden by default) -->
             <div id="admin-badge" class="hidden">
                 <button onclick="logoutAdmin()" class="bg-red-600/80 hover:bg-red-600 text-white px-3 py-1.5 rounded-xl text-xs font-medium transition flex items-center gap-1.5">
                     <i class="fa-solid fa-power-off"></i> ออกจากหลังบ้าน
@@ -46,7 +46,6 @@
             <div class="absolute -bottom-10 -left-10 w-60 h-60 bg-blue-600/20 rounded-full blur-3xl pointer-events-none"></div>
 
             <div class="relative z-10 flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-8 text-center md:text-left">
-                <!-- Avatar -->
                 <div class="relative group">
                     <div class="w-28 h-28 md:w-36 md:h-36 rounded-2xl bg-gradient-to-tr from-purple-600 to-pink-500 p-1 shadow-xl shadow-purple-500/20">
                         <div class="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center overflow-hidden">
@@ -55,7 +54,6 @@
                     </div>
                 </div>
 
-                <!-- Profile Info -->
                 <div class="flex-grow space-y-3">
                     <div class="flex flex-col md:flex-row items-center md:items-start justify-between gap-3">
                         <div>
@@ -87,26 +85,40 @@
             </div>
         </section>
 
-        <!-- Admin Upload Panel (Hidden by default) -->
+        <!-- Admin Link Add Panel (Hidden by default) -->
         <div id="admin-panel" class="hidden bg-slate-900 border border-emerald-500/40 rounded-2xl p-6 shadow-xl relative overflow-hidden">
             <div class="flex items-center gap-3 mb-4 text-emerald-400">
-                <i class="fa-solid fa-cloud-arrow-up text-2xl"></i>
+                <i class="fa-solid fa-plus-circle text-2xl"></i>
                 <div>
-                    <h2 class="text-xl font-bold">ระบบหลังบ้าน: อัปโหลดไฟล์พร้อมรูปหน้าปก</h2>
-                    <p class="text-xs text-slate-400">เลือกไฟล์เพลง/ไฟล์งาน และใส่ลิงก์รูปหน้าปกเพลง</p>
+                    <h2 class="text-xl font-bold">ระบบหลังบ้าน: เพิ่มรายการเพลง / ลิงก์ดาวน์โหลด</h2>
+                    <p class="text-xs text-slate-400">กรอกข้อมูลเพลงและแปะลิงก์ดาวน์โหลด (Google Drive, Mega, MediaFire ฯลฯ)</p>
                 </div>
             </div>
-            <form id="upload-form" onsubmit="uploadFile(event)" class="space-y-4">
+            
+            <form id="add-link-form" onsubmit="addFileLink(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-400 mb-1">1. เลือกไฟล์ที่จะอัปโหลด (เพลง/ไฟล์):</label>
-                    <input type="file" id="file-input" required class="block w-full text-sm text-slate-300 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:bg-purple-600 file:text-white hover:file:bg-purple-500 file:font-semibold cursor-pointer bg-slate-950 rounded-xl border border-slate-800 p-2">
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">1. ชื่อไฟล์ / ชื่อเพลง *</label>
+                    <input type="text" id="title-input" required placeholder="เช่น 【 7oey Rmxz 】- PST.mp3" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-purple-500 transition">
                 </div>
+
                 <div>
-                    <label class="block text-xs font-semibold text-slate-400 mb-1">2. ลิงก์รูปหน้าปกเพลง (URL รูปภาพ - ไม่ใส่ก็ได้):</label>
-                    <input type="url" id="cover-input" placeholder="https://example.com/cover.jpg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-purple-500 transition">
+                    <label class="block text-xs font-semibold text-slate-400 mb-1">2. ลิงก์สำหรับดาวน์โหลด (Google Drive / Mega / MediaFire) *</label>
+                    <input type="url" id="download-url-input" required placeholder="https://drive.google.com/file/d/..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-purple-500 transition">
                 </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-1">3. ลิงก์รูปหน้าปกเพลง (URL รูปภาพ - ไม่ใส่ก็ได้)</label>
+                        <input type="url" id="cover-input" placeholder="https://example.com/cover.jpg" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-purple-500 transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-1">4. ลิงก์ไฟล์เสียงตัวอย่างเพลง (ถ้ามี - เพื่อเปิดฟังในเว็บได้)</label>
+                        <input type="url" id="audio-preview-input" placeholder="https://example.com/preview.mp3" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-purple-500 transition">
+                    </div>
+                </div>
+
                 <button type="submit" id="submit-btn" class="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold px-6 py-3 rounded-xl transition w-full flex items-center justify-center gap-2 shadow-lg shadow-emerald-600/20">
-                    <i class="fa-solid fa-upload"></i> เริ่มอัปโหลดไฟล์
+                    <i class="fa-solid fa-square-plus"></i> เพิ่มรายการลงเว็บ
                 </button>
             </form>
             <p id="status-msg" class="mt-3 text-sm text-center font-medium text-yellow-400"></p>
@@ -114,7 +126,6 @@
 
         <!-- File Distribution Section -->
         <section class="space-y-4">
-            <!-- Section Header & Search Bar -->
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900/60 p-5 rounded-2xl border border-slate-800/80">
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-8 bg-purple-500/20 border border-purple-500/30 rounded-lg flex items-center justify-center text-purple-400">
@@ -126,7 +137,6 @@
                     </div>
                 </div>
 
-                <!-- Search Input -->
                 <div class="relative w-full md:w-72">
                     <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
                     <input type="text" id="search-input" oninput="filterFiles()" placeholder="ค้นหาชื่อไฟล์ หรือเพลง..." class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-purple-500 transition">
@@ -205,7 +215,7 @@
 
         function filterFiles() {
             const query = document.getElementById('search-input').value.toLowerCase();
-            const filtered = allFiles.filter(file => file.pathname.toLowerCase().includes(query));
+            const filtered = allFiles.filter(file => (file.title || file.pathname).toLowerCase().includes(query));
             renderFiles(filtered);
         }
 
@@ -222,37 +232,39 @@
             }
 
             container.innerHTML = files.map(file => {
-                const isAudio = /\.(mp3|wav|m4a|ogg)$/i.test(file.pathname);
-                const urlObj = new URL(file.url);
-                const coverUrl = urlObj.searchParams.get('cover') || 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=500&auto=format&fit=crop&q=60';
+                const title = file.title || file.pathname;
+                const downloadUrl = file.downloadUrl || file.url;
+                const coverUrl = file.coverUrl || 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=500&auto=format&fit=crop&q=60';
+                const audioPreview = file.audioPreview;
 
                 return `
                     <div class="flex flex-col justify-between p-4 bg-slate-900/60 hover:bg-slate-900 rounded-2xl border border-slate-800/80 hover:border-purple-500/40 transition-all gap-4 shadow-sm group">
                         <div class="flex gap-4 items-center">
                             <div class="w-20 h-20 rounded-xl bg-slate-950 border border-slate-800 overflow-hidden flex-shrink-0 relative group-hover:scale-105 transition-transform">
                                 <img src="${coverUrl}" alt="Cover" class="w-full h-full object-cover">
-                                ${isAudio ? `<div class="absolute inset-0 bg-black/30 flex items-center justify-center text-white"><i class="fa-solid fa-music text-xs"></i></div>` : ''}
                             </div>
                             
                             <div class="flex-grow overflow-hidden space-y-2">
-                                <h3 class="font-semibold text-slate-200 truncate text-sm md:text-base">${file.pathname}</h3>
+                                <h3 class="font-semibold text-slate-200 truncate text-sm md:text-base">${title}</h3>
                                 
-                                ${isAudio ? `
+                                ${audioPreview ? `
                                     <audio controls class="w-full h-8 rounded-lg bg-slate-950 accent-purple-500">
-                                        <source src="${file.url}" type="audio/mpeg">
+                                        <source src="${audioPreview}" type="audio/mpeg">
                                     </audio>
                                 ` : `
-                                    <span class="inline-block text-[10px] bg-slate-800 text-slate-400 px-2 py-0.5 rounded-md">ไฟล์ทั่วไป</span>
+                                    <span class="inline-block text-[10px] bg-slate-800 text-purple-300 px-2.5 py-1 rounded-md border border-slate-700">
+                                        <i class="fa-solid fa-link mr-1"></i> พร้อมดาวน์โหลด
+                                    </span>
                                 `}
                             </div>
                         </div>
 
                         <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-800/60">
-                            <a href="${file.url}" target="_blank" download class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-medium px-4 py-2 rounded-xl text-xs transition flex items-center gap-1.5 shadow-md shadow-purple-600/20">
-                                <i class="fa-solid fa-download"></i> ดาวน์โหลด
+                            <a href="${downloadUrl}" target="_blank" class="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-medium px-4 py-2 rounded-xl text-xs transition flex items-center gap-1.5 shadow-md shadow-purple-600/20">
+                                <i class="fa-solid fa-download"></i> ดาวน์โหลดไฟล์
                             </a>
                             ${isAdmin ? `
-                                <button onclick="deleteFile('${file.url}')" class="bg-red-600/10 hover:bg-red-600 text-red-400 hover:text-white border border-red-500/20 font-medium px-3 py-2 rounded-xl text-xs transition">
+                                <button onclick="deleteFile('${file.id}')" class="bg-red-600/10 hover:bg-red-600 text-red-400 hover:text-white border border-red-500/20 font-medium px-3 py-2 rounded-xl text-xs transition">
                                     <i class="fa-solid fa-trash"></i> ลบ
                                 </button>
                             ` : ''}
@@ -262,35 +274,32 @@
             }).join('');
         }
 
-        async function uploadFile(e) {
+        async function addFileLink(e) {
             e.preventDefault();
-            const fileInput = document.getElementById('file-input');
-            const coverInput = document.getElementById('cover-input');
-            const file = fileInput.files[0];
-            if (!file) return;
+            const title = document.getElementById('title-input').value;
+            const downloadUrl = document.getElementById('download-url-input').value;
+            const coverUrl = document.getElementById('cover-input').value;
+            const audioPreview = document.getElementById('audio-preview-input').value;
 
             const status = document.getElementById('status-msg');
             const submitBtn = document.getElementById('submit-btn');
 
-            status.innerText = "กำลังอัปโหลดไฟล์ไปที่ AzHub...";
+            status.innerText = "กำลังบันทึกข้อมูล...";
             submitBtn.disabled = true;
 
             try {
-                // ล้างสัญลักษณ์พิเศษออกจากชื่อไฟล์ ป้องกันข้อผิดพลาด
-                let cleanFileName = file.name.replace(/[^a-zA-Z0-9.\-_]/g, '_');
-
-                const res = await fetch(`/api/upload?filename=${encodeURIComponent(cleanFileName)}`, {
+                const res = await fetch('/api/files', {
                     method: 'POST',
-                    body: file
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ title, downloadUrl, coverUrl, audioPreview })
                 });
 
                 if (res.ok) {
-                    status.innerText = "✅ อัปโหลดสำเร็จ!";
-                    fileInput.value = '';
-                    coverInput.value = '';
+                    status.innerText = "✅ เพิ่มรายการสำเร็จ!";
+                    document.getElementById('add-link-form').reset();
                     loadFiles();
                 } else {
-                    status.innerText = "❌ เกิดข้อผิดพลาดในการอัปโหลด";
+                    status.innerText = "❌ เกิดข้อผิดพลาดในการบันทึก";
                 }
             } catch (err) {
                 status.innerText = "❌ เกิดข้อผิดพลาด";
@@ -299,9 +308,9 @@
             }
         }
 
-        async function deleteFile(url) {
-            if (!confirm("คุณแน่ใจหรือไม่ว่าต้องการลบไฟล์นี้ออกจาก AzHub?")) return;
-            await fetch(`/api/files?url=${encodeURIComponent(url)}`, { method: 'DELETE' });
+        async function deleteFile(id) {
+            if (!confirm("คุณแน่ใจหรือไม่ว่าต้องการลบรายการนี้ออกจาก AzHub?")) return;
+            await fetch(`/api/files?id=${encodeURIComponent(id)}`, { method: 'DELETE' });
             loadFiles();
         }
 
